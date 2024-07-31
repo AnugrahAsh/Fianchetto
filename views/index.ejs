@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%=title%></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .chessboard {
+            display: grid;
+            grid-template-columns: repeat(8, minmax(0, 1fr));
+            grid-template-rows: repeat(8, minmax(0, 1fr));
+            width: 400px;
+            height: 400px;
+            transform: rotate(0deg);
+            border: 3px solid white;
+        }
+
+        .piece.white {
+            color: white;
+            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 1));
+        }
+
+        .piece.black {
+            color: black;
+        }
+
+        .flipped {
+            transform: rotate(180deg);
+        }
+
+        .square {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .square.light {
+            background-color: #b9b8b8;
+        }
+
+        .square.dark {
+            /* background-color: #2d6fba; */
+            background-color: #204d80;
+        }
+
+        .piece {
+            font-size: 36px;
+            cursor: pointer;
+        }
+
+        .piece.draggable {
+            cursor: grab;
+        }
+
+        .dragging {
+            opacity: 0.5;
+        }
+
+        /* Rotate pieces for black player */
+        .flipped .piece {
+            transform: rotate(180deg);
+        }
+        .timer {
+            font-size: 24px;
+            margin: 10px;
+        }
+
+        #white-timer{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: auto;
+            width: auto;
+            background-color: white;
+            padding: 5px;
+            color: black;
+            z-index: 2;
+            font-size: 30px;
+            text-align: center;
+        }
+        #black-timer{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            height: auto;
+            width: auto;
+            background-color: white;
+            color: black;
+            z-index: 2;
+            padding: 5px;
+            font-size: 30px;
+            text-align: center;
+        }
+        .center{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .chatbox{
+            width: 100%;
+            background-color: rgb(120, 120, 214);
+            padding: 20px;
+        }
+        .chatbox input{
+            height: 30px;
+            width: 70%;
+            border-radius: 12px;
+            padding: 10px;
+        }
+        .messages{
+            border: 2px solid black;
+            width: 70%;
+            border-radius: 12px;
+            height: 200px;
+            overflow-y: scroll;
+            margin-bottom: 20px;
+            background-color: rgba(0, 0, 0, 0.215);
+            display: flex;
+            padding: 5px;
+            flex-direction: column;
+        }
+        .messages::-webkit-scrollbar { 
+            /* display: none;   */
+            background-color: rgba(174, 174, 174, 0.187);
+            border-radius: 24px;
+            color: black;
+            width: 12px;
+        }
+        .messages::-webkit-scrollbar-track {
+            background: #888;
+          border-radius: 50px;
+        }
+        
+        .messages::-webkit-scrollbar-thumb {
+            background: #565555;
+          border-radius: 24px;
+        }
+        
+        .messages::-webkit-scrollbar-thumb:hover {
+          background: #555;
+          border-radius: 24px;
+        }
+        .chatbox button{
+            border: 1px solid black;
+            padding: 2px;
+            border-radius: 12px;
+            background-color: green;
+            width: 50px;
+        }
+    </style>
+    <script>
+     document.addEventListener('DOMContentLoaded', () => {
+        const uniqueSocket = io();
+  
+        uniqueSocket.on('message', (message) => {
+          const messageContainer = document.getElementById('messages');
+          const messageElement = document.createElement('div');
+          messageElement.style.backgroundColor = "red";
+          messageElement.textContent = message;
+          messageContainer.append(messageElement);
+        });
+  
+        const form = document.getElementById('messageForm');
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const messageInput = document.getElementById('messageInput');
+          const message = messageInput.value;
+          uniqueSocket.emit('chatMessage', { message });
+          messageInput.value = '';
+        });
+      });
+    </script>
+</head>
+<body>
+    <div class="w-full flex items-center justify-around h-screen bg-green-600">
+        <!-- w-full flex items-center justify-center h-screen bg-blue-400 -->
+        <div class="center">
+            <p>White</p>
+            <div id="white-timer" class="timer">10:00</div>
+        </div>
+        <div class="chessboard w-96 h-96 bg-blue-400"></div>
+        <div class="center">
+            <div>Black</div>
+            <div id="black-timer" class="timer">10:00</div>
+        </div>
+    </div>
+    <form action="" id="messageForm">
+        <div class="chatbox">
+            <div class="messages">
+                
+            </div>
+            <div class="sending">
+                <input type="text" id="messageInput" placeholder="Send a message here : ">
+                <button type="submit">Send</button>
+            </div>
+        </div>
+    </form>
+
+
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+        integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js" integrity="sha512-xRllwz2gdZciIB+AkEbeq+gVhX8VB8XsfqeFbUh+SzHlN96dEduwtTuVuc2u9EROlmW9+yhRlxjif66ORpsgVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="/js/chessgame.js"></script>
+    <script>
+
+    </script>
+</body>
+</html>
