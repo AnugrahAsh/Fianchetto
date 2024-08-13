@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body{
+            background-color: rgb(187, 118, 66);
+            text-align: center;
+        }
+
+        .card{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        form{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+            border: 1px solid black;
+            padding: 50px 25px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 4px 0px gray;
+            background-color: rgb(102, 184, 228);
+            font-size: 18px;
+        }
+        span{
+            margin-top: 10px;
+        }
+        span a{
+            margin-left: 5px;
+            text-decoration: none;
+            color: crimson;
+        }
+        input{
+            background: white;
+            height: 30px;
+            width: 250px;
+        }
+        button{
+            margin-top: 10px;
+            padding: 8px 24px;
+            background-color: crimson;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Let's Play Some Chess</h1>
+        <form action="" method="post">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" required>
+            <label for="password">Password:</label>
+            <input type="text" name="password" id="password" required>
+            <button type="submit">Login</button>
+            <span>Are you new?<a href="/register">Signup</a></span>
+        </form>
+    </div>
+</body>
+</html>

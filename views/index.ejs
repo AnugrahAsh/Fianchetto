@@ -154,26 +154,26 @@
         }
     </style>
     <script>
-     document.addEventListener('DOMContentLoaded', () => {
-        const uniqueSocket = io();
+    //  document.addEventListener('DOMContentLoaded', () => {
+    //     const uniqueSocket = io();
   
-        uniqueSocket.on('message', (message) => {
-          const messageContainer = document.getElementById('messages');
-          const messageElement = document.createElement('div');
-          messageElement.style.backgroundColor = "red";
-          messageElement.textContent = message;
-          messageContainer.append(messageElement);
-        });
+    //     uniqueSocket.on('message', (message) => {
+    //       const messageContainer = document.getElementById('messages');
+    //       const messageElement = document.createElement('div');
+    //       messageElement.style.backgroundColor = "red";
+    //       messageElement.textContent = message;
+    //       messageContainer.append(messageElement);
+    //     });
   
-        const form = document.getElementById('messageForm');
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const messageInput = document.getElementById('messageInput');
-          const message = messageInput.value;
-          uniqueSocket.emit('chatMessage', { message });
-          messageInput.value = '';
-        });
-      });
+    //     const form = document.getElementById('messageForm');
+    //     form.addEventListener('submit', (e) => {
+    //       e.preventDefault();
+    //       const messageInput = document.getElementById('messageInput');
+    //       const message = messageInput.value;
+    //       uniqueSocket.emit('chatMessage', { message });
+    //       messageInput.value = '';
+    //     });
+    //   });
     </script>
 </head>
 <body>
